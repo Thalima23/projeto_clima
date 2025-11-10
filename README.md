@@ -87,7 +87,8 @@ npm test
 ## 📄 Licença
 MIT License © Thalita
 
-🌐 Autora
+🌐 Autora:
+
 Thalita Lima- Desenvolvedora Front-end em formação
 
 
