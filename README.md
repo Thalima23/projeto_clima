@@ -91,4 +91,6 @@ MIT License © Thalita
 
 Thalita Lima- Desenvolvedora Front-end em formação
 
+Portfólio [https://thalima23.github.io/PORTIFOLIO/] 
+
 
