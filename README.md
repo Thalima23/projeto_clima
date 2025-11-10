@@ -46,3 +46,14 @@ projeto_clima/
 ├─ style.css # Estilo da aplicação
 └─ README.md # Este arquivo
 
+## 🚀 Instalação e Execução
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/projeto_clima.git
+
+2. Acesse a pasta do projeto:
+cd projeto_clima
+Abra o arquivo index.html no navegador de sua preferência.
+
