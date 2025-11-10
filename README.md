@@ -35,3 +35,14 @@ Aplicação web para consulta de dados meteorológicos em tempo real. Utiliza as
 
 ## 💻 Estrutura do Projeto
 
+projeto_clima/
+│
+├─ assets/ # Imagens, ícones e arquivos estáticos
+├─ js/
+│ └─ api.js # Lógica principal da aplicação
+├─ tests/
+│ └─ api.test.js # Testes unitários com Jest
+├─ index.html # Página principal
+├─ style.css # Estilo da aplicação
+└─ README.md # Este arquivo
+
