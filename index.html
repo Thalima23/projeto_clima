@@ -1,27 +1,67 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clima Agora</title>
 
-    <!-- Caminho correto do CSS -->
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!-- Weather Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Projeto Previsão do Tempo.">
+    <meta name="author" content="Thalita">
+    <meta name="keywords" content="clima, previsão do tempo, Open Meteo, desenvolvimento web, fullstack, HTML, CSS, JavaScript">
+
+    <title>Previsão do Tempo</title>
+
+    <link rel="icon" href="./assets/images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
+<div class="container">
 
-    <div class="container">
-        <h1>Consulta de Clima</h1>
+    <!-- TELA DE BUSCA -->
+    <div id="searchScreen">
+        <h1>Previsão do Tempo</h1>
 
-        <form id="form">
-            <input type="text" id="city" placeholder="Digite o nome da cidade" required />
-            <button type="submit">Buscar</button>
-        </form>
+        <div class="search-area">
+            <input type="text" id="cityInput" placeholder="Digite o nome da cidade">
+            <button id="searchBtn" type="button">Buscar</button>
+        </div>
 
-        <div id="result" class="result"></div>
+        <div id="loading" style="display:none;">Carregando...</div>
+        <div id="error" style="display:none;"></div>
     </div>
 
-    <!-- Caminho certo do JS -->
-    <script src="./assets/js/api.js"></script>
+
+    <!-- TELA DE RESULTADO -->
+    <div id="resultScreen" style="display:none;">
+
+        <!-- Temperatura + Ícone -->
+        <div class="weather-header">
+            <i id="weatherIcon" class="wi" style="font-size: 4rem;"></i>
+            <p id="temperature"></p>
+        </div>
+
+        <!-- Nome da cidade -->
+        <div class="weather-info">
+            <h2 id="cityName"></h2>
+            <p id="currentDate"></p>
+            <p id="description"></p>
+        </div>
+
+        <button id="backBtn" title="Voltar ao início">
+    <i class="wi wi-direction-left" style="font-size: 2.2rem;"></i>
+        </button>
+    </div>
+
+</div>
+
+<script src="./assets/js/api.js"></script>
 </body>
 </html>
