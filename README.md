@@ -35,6 +35,7 @@ Aplicação web para consulta de dados meteorológicos em tempo real. Utiliza as
 
 ## 💻 Estrutura do Projeto
 
+```bash
 projeto_clima/
 │
 ├─ assets/ # Imagens, ícones e arquivos estáticos
@@ -45,6 +46,7 @@ projeto_clima/
 ├─ index.html # Página principal
 ├─ style.css # Estilo da aplicação
 └─ README.md # Este arquivo
+````
 
 ## 🚀 Instalação e Execução
 
@@ -52,8 +54,40 @@ projeto_clima/
 
 ```bash
 git clone https://github.com/seu-usuario/projeto_clima.git
+````
 
 2. Acesse a pasta do projeto:
+```bash
 cd projeto_clima
-Abra o arquivo index.html no navegador de sua preferência.
+````
+3. Abra o arquivo index.html no navegador de sua preferência.
+
+## ⚙️ Uso
+
+1. Digite o nome de uma cidade no campo de input.
+2. Clique em Buscar ou pressione Enter.
+3. Visualize os dados climáticos na tela de resultado.
+4. Clique em Voltar para realizar uma nova pesquisa.
+5. O tema do fundo muda automaticamente entre claro (dia) e escuro (noite) conforme o horário local.
+## ⚙️ Testes
+O projeto utiliza Jest para testes unitários.
+Para rodar os testes:
+```bash
+npm install
+npm test
+```
+# Testes cobrem:
+- Retorno de coordenadas válidas
+- Entrada de cidade inexistente
+- Validação de entrada vazia
+- Fluxo completo de busca e exibição do clima
+- Compatibilidade com alterações de formato da resposta da API
+- Limite de requisições e timeout
+
+## 📄 Licença
+MIT License © Thalita
+
+🌐 Autora
+Thalita Lima- Desenvolvedora Front-end em formação
+
 
