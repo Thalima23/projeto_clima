@@ -53,7 +53,7 @@ projeto_clima/
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/projeto_clima.git
+git clone https://github.com/Thalima23/projeto_clima
 ````
 
 2. Acesse a pasta do projeto:
