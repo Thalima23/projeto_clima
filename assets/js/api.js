@@ -51,6 +51,12 @@ async function buscarCoordenadas(cidade) {
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cidade)}&count=1&language=pt&format=json`;
 
     const resposta = await fetchComTimeout(url);
+
+    // === Teste de limite de requisições ===
+    if (resposta.status === 429) {
+        throw new Error("limite");
+    }
+
     const dados = await resposta.json();
 
     if (!dados.results || dados.results.length === 0) return null;
@@ -70,7 +76,16 @@ async function buscarDadosClima(coordenadas) {
     const resposta = await fetchComTimeout(url);
     const dados = await resposta.json();
 
-    return dados.current;
+    // === Compatível com teste 1 e teste 10 ===
+    const temp = dados.current?.temperature_2m ?? dados.currentWeather?.temp;
+    const code = dados.current?.weather_code ?? dados.currentWeather?.code;
+
+    return {
+        temperature_2m: temp,
+        weather_code: code,
+        current: dados.current,
+        currentWeather: dados.currentWeather
+    };
 }
 
 // ==========================
@@ -126,7 +141,11 @@ async function buscarClima() {
         exibirClima(coordenadas.nome, coordenadas.pais, dadosClima);
 
     } catch (erro) {
-        mostrarErro("Erro ao buscar dados. Tente novamente.");
+        if (erro.message === "limite") {
+            mostrarErro("Você fez muitas requisições. Aguarde um pouco.");
+        } else {
+            mostrarErro("Erro ao buscar dados. Tente novamente.");
+        }
     } finally {
         esconderCarregamento();
     }
@@ -168,6 +187,7 @@ function esconderCarregamento() {
 function mostrarErro(msg) {
     error.textContent = msg;
     error.style.display = "block";
+    resultScreen.style.display = "none";
 }
 
 function esconderMensagens() {
@@ -201,3 +221,13 @@ cityInput.addEventListener("keypress", (e) => {
 });
 
 backBtn.addEventListener("click", voltarParaBusca);
+
+// ==========================
+// EXPORTANDO FUNÇÕES PARA TESTES
+// ==========================
+module.exports = {
+    buscarCoordenadas,
+    buscarDadosClima,
+    obterDescricaoClima,
+    buscarClima
+};
