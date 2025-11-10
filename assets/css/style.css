@@ -1,0 +1,129 @@
+/* ===== VARIÁVEIS DE CORES ===== */
+:root {
+    --bg-dark: #1d1f4b;       /* azul marinho */
+    --bg-light: #6a4bbf;      /* lilás */
+    --card-bg: rgba(255, 255, 255, 0.12);
+    --card-border: rgba(255, 255, 255, 0.2);
+
+    --btn: #9f7bff;
+    --btn-hover: #b892ff;
+
+    --text-light: #ffffff;
+    --text-muted: #d8d8d8;
+
+    --blur: blur(14px);
+}
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== BODY ===== */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* ===== CARD PRINCIPAL ===== */
+.container {
+    width: 350px;
+    background: var(--card-bg);
+    backdrop-filter: var(--blur);
+    border-radius: 22px;
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--card-border);
+    color: var(--text-light);
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* ===== TÍTULO ===== */
+.container h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* ===== FORM ===== */
+form {
+    display: flex;
+    gap: 0.6rem;
+}
+
+input {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.2);
+    color: var(--text-light);
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+
+button {
+    padding: 0.8rem 1rem;
+    background: var(--btn);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: var(--btn-hover);
+}
+
+/* ===== RESULTADO ===== */
+.result {
+    display: none;
+    background: rgba(255,255,255,0.15);
+    padding: 1rem;
+    border-radius: 14px;
+    font-size: 1.2rem;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Animação suave quando aparece */
+.result.show {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 380px) {
+    .container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}

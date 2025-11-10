@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clima Agora</title>
+
+    <!-- Caminho correto do CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+<body>
+
+    <div class="container">
+        <h1>Consulta de Clima</h1>
+
+        <form id="form">
+            <input type="text" id="city" placeholder="Digite o nome da cidade" required />
+            <button type="submit">Buscar</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <!-- Caminho certo do JS -->
+    <script src="./assets/js/api.js"></script>
+</body>
+</html>
