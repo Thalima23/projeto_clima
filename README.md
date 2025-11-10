@@ -1,0 +1,37 @@
+# Projeto Clima 🌤️
+
+**Sistema de Previsão do Tempo**  
+Aplicação web para consulta de dados meteorológicos em tempo real. Utiliza as APIs **Open-Meteo** (Geocoding e Weather) para buscar informações climáticas de cidades ao redor do mundo.
+
+---
+
+## 📌 Funcionalidades
+
+- Buscar clima atual de qualquer cidade.
+- Exibir:
+  - Temperatura em °C
+  - Descrição do clima
+  - Ícone correspondente ao clima
+  - Data atual formatada
+- Tema visual dinâmico (dia/noite) baseado no horário local.
+- Navegação entre tela de busca e resultado com botão de voltar.
+- Tratamento de erros e mensagens amigáveis:
+  - Cidade não encontrada
+  - Limite de requisições da API
+  - Erros de conexão
+  - Timeout de requisição
+
+---
+
+## 🛠 Tecnologias Utilizadas
+
+- **HTML5** e **CSS3**
+- **JavaScript (ES6+)**
+- **APIs externas**: Open-Meteo Geocoding e Weather
+- **Jest** para testes unitários
+- **Weather Icons** para exibição dos ícones do clima
+
+---
+
+## 💻 Estrutura do Projeto
+
