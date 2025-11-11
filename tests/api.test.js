@@ -14,6 +14,9 @@ document.body.innerHTML = `
   <div id="weatherIcon"></div>
   <div id="description"></div>
   <div id="currentDate"></div>
+  <div id="humidity"></div>
+  <div id="wind"></div>
+  <div id="rain"></div>
 `;
 
 // Importar funções do api.js
@@ -23,11 +26,11 @@ const { buscarCoordenadas, buscarDadosClima, obterDescricaoClima, buscarClima } 
 let originalFetch;
 beforeEach(() => {
   originalFetch = global.fetch;
+  jest.clearAllMocks();
 });
 
 afterEach(() => {
   global.fetch = originalFetch;
-  jest.clearAllMocks();
 });
 
 // Elementos do DOM
@@ -41,46 +44,53 @@ const cityName = document.getElementById('cityName');
 const weatherIcon = document.getElementById('weatherIcon');
 const description = document.getElementById('description');
 const currentDate = document.getElementById('currentDate');
+const humidity = document.getElementById('humidity');
+const wind = document.getElementById('wind');
+const rain = document.getElementById('rain');
 
 describe('Funções de API - Projeto Clima', () => {
 
   // ===== TESTE 1: cidade válida =====
-test('1. Nome de cidade válido retorna coordenadas e dados meteorológicos', async () => {
-  global.fetch = jest.fn((url) => {
-    if (url.includes('geocoding-api')) {
-      return Promise.resolve({
-        json: () =>
-          Promise.resolve({
+  test('1. Nome de cidade válido retorna coordenadas e dados meteorológicos', async () => {
+    global.fetch = jest.fn((url) => {
+      if (url.includes('geocoding-api')) {
+        return Promise.resolve({
+          status: 200,
+          json: () => Promise.resolve({
             results: [
               { latitude: -23.5505, longitude: -46.6333, name: 'São Paulo', country: 'Brasil' },
             ],
           }),
-      });
-    }
-    return Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          current: { temperature_2m: 25.5, weather_code: 0 },
+        });
+      }
+      return Promise.resolve({
+        status: 200,
+        json: () => Promise.resolve({
+          current: { temperature_2m: 25.5, weather_code: 0, relative_humidity_2m: 80, wind_speed_10m: 10, precipitation: 2 },
         }),
+      });
     });
-  });
 
-  const coordenadas = await buscarCoordenadas('São Paulo');
-  expect(coordenadas).toEqual({
-    latitude: -23.5505,
-    longitude: -46.6333,
-    nome: 'São Paulo',
-    pais: 'Brasil',
-  });
+    const coordenadas = await buscarCoordenadas('São Paulo');
+    expect(coordenadas).toEqual({
+      latitude: -23.5505,
+      longitude: -46.6333,
+      nome: 'São Paulo',
+      pais: 'Brasil',
+    });
 
-  const clima = await buscarDadosClima(coordenadas);
-
+    const clima = await buscarDadosClima(coordenadas);
+    expect(clima.temperature_2m).toBe(25.5);
+    expect(clima.weather_code).toBe(0);
+    expect(clima.humidity).toBe(80);
+    expect(clima.wind_speed).toBe(10);
+    expect(clima.precipitation).toBe(2);
   });
 
   // ===== TESTE 2: cidade inexistente =====
   test('2. Nome de cidade inexistente retorna null', async () => {
     global.fetch = jest.fn(() =>
-      Promise.resolve({ json: () => Promise.resolve({ results: [] }) })
+      Promise.resolve({ status: 200, json: () => Promise.resolve({ results: [] }) })
     );
 
     const resultado = await buscarCoordenadas('CidadeInexistente123');
@@ -113,17 +123,19 @@ test('1. Nome de cidade válido retorna coordenadas e dados meteorológicos', as
     global.fetch = jest.fn((url) => {
       if (url.includes('geocoding-api')) {
         return Promise.resolve({
-          json: () =>
-            Promise.resolve({
-              results: [
-                { latitude: -23.5505, longitude: -46.6333, name: 'São Paulo', country: 'Brasil' },
-              ],
-            }),
+          status: 200,
+          json: () => Promise.resolve({
+            results: [
+              { latitude: -23.5505, longitude: -46.6333, name: 'São Paulo', country: 'Brasil' },
+            ],
+          }),
         });
       }
       return Promise.resolve({
-        json: () =>
-          Promise.resolve({ current: { temperature_2m: 25, weather_code: 0 } }),
+        status: 200,
+        json: () => Promise.resolve({
+          current: { temperature_2m: 25, weather_code: 0, relative_humidity_2m: 75, wind_speed_10m: 12, precipitation: 1 }
+        }),
       });
     });
 
@@ -135,13 +147,16 @@ test('1. Nome de cidade válido retorna coordenadas e dados meteorológicos', as
     expect(description.textContent).toBe('Céu limpo');
     expect(searchScreen.style.display).toBe('none');
     expect(resultScreen.style.display).toBe('flex');
+    expect(humidity.textContent).toBe('75');
+    expect(wind.textContent).toBe('12');
+    expect(rain.textContent).toBe('1');
   });
 
   // ===== TESTE 7: buscarClima cidade não encontrada =====
   test('7. buscarClima com cidade inválida mostra erro', async () => {
     cityInput.value = 'CidadeErrada';
     global.fetch = jest.fn(() =>
-      Promise.resolve({ json: () => Promise.resolve({ results: [] }) })
+      Promise.resolve({ status: 200, json: () => Promise.resolve({ results: [] }) })
     );
 
     await buscarClima();
@@ -151,74 +166,72 @@ test('1. Nome de cidade válido retorna coordenadas e dados meteorológicos', as
     expect(resultScreen.style.display).toBe('none');
   });
 
- // ===== TESTE 8: Limite de requisições da API excedido =====
-test('8. Limite de requisições da API excedido', async () => {
-  cityInput.value = 'São Paulo';
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      status: 429,
-      ok: false,
-      json: () =>
-        Promise.resolve({}), // o api.js só checa o status, não precisa de message aqui
-    })
-  );
+  // ===== TESTE 8: Limite de requisições da API excedido =====
+  test('8. Limite de requisições da API excedido', async () => {
+    cityInput.value = 'São Paulo';
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        status: 429,
+        json: () => Promise.resolve({})
+      })
+    );
 
-  await buscarClima();
+    await buscarClima();
 
-  expect(error.style.display).toBe('block');
-  expect(error.textContent).toBe('Você fez muitas requisições. Aguarde um pouco.');
-  expect(resultScreen.style.display).toBe('none');
-});
-
-  // ===== TESTE 9: Conexão de rede lenta/instável =====
-  test('9. Conexão lenta gera timeout', async () => {
-    const TEMPO_MAX = 500; // 0.5s para teste rápido
+    expect(error.style.display).toBe('block');
+    expect(error.textContent).toBe('Você fez muitas requisições. Aguarde um pouco.');
+    expect(resultScreen.style.display).toBe('none');
+  });
+  test('9. Conexão lenta gera erro na interface', async () => {
+    jest.useFakeTimers();
 
     cityInput.value = 'São Paulo';
-    global.fetch = jest.fn(
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({ json: () => Promise.resolve({ current: { temperature_2m: 25, weather_code: 0 } }) });
-          }, TEMPO_MAX + 500); // excede TEMPO_MAX
-        })
+
+    // Mock do fetch simulando timeout / conexão lenta
+    global.fetch = jest.fn(() =>
+      new Promise((_, reject) => {
+        const erro = new Error("Aborted");
+        erro.name = "AbortError"; // necessário para fetchComTimeout
+        setTimeout(() => reject(erro), 1500); // maior que TIMEOUT_MS
+      })
     );
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Timeout: requisição demorou demais')), TEMPO_MAX)
-    );
+    const promise = buscarClima();
 
-    await expect(
-      Promise.race([buscarClima(), timeoutPromise])
-    ).rejects.toThrow(/Timeout/);
+    // Avança o timer para disparar o timeout
+    jest.advanceTimersByTime(2000);
+
+    await promise;
+
+    expect(error.style.display).toBe('block');
+    expect(error.textContent).toBe('Erro ao buscar dados. Tente novamente.');
+    expect(resultScreen.style.display).toBe('none');
+
+    jest.useRealTimers();
   });
 
- // ===== TESTE 10: Mudança inesperada no formato da resposta JSON =====
-test('10. API mudou formato da resposta', async () => {
-  cityInput.value = 'São Paulo';
-  global.fetch = jest.fn((url) => {
-    if (url.includes('geocoding-api')) {
+  // ===== TESTE 10: Mudança inesperada no formato da resposta JSON =====
+  test('10. API mudou formato da resposta', async () => {
+    cityInput.value = 'São Paulo';
+    global.fetch = jest.fn((url) => {
+      if (url.includes('geocoding-api')) {
+        return Promise.resolve({
+          status: 200,
+          json: () => Promise.resolve({ results: [] }),
+        });
+      }
       return Promise.resolve({
-        json: () =>
-          Promise.resolve({
-            results: [], // coordenadas não encontradas, assim o buscarCoordenadas retorna null
-          }),
+        status: 200,
+        json: () => Promise.resolve({ currentWeather: { temperature_2m: 25, weather_code: 0 } }),
       });
-    }
-    return Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          currentWeather: { temperature_2m: 25, weather_code: 0 }, // novo formato da API
-        }),
     });
+
+    const coordenadas = await buscarCoordenadas('São Paulo');
+    expect(coordenadas).toBeNull();
+
+    const dadosClima = await buscarDadosClima({ latitude: -23.5505, longitude: -46.6333 });
+    expect(dadosClima.current).toBeUndefined();
+    expect(dadosClima.currentWeather).toBeDefined();
   });
 
-  const coordenadas = await buscarCoordenadas('São Paulo');
-  expect(coordenadas).toBeNull(); // mock retorna vazio
-
-  const dadosClima = await buscarDadosClima({ latitude: -23.5505, longitude: -46.6333 });
-  expect(dadosClima.current).toBeUndefined();
-  expect(dadosClima.currentWeather).toBeDefined();
-
-    });
 });

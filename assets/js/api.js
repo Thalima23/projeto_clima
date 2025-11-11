@@ -154,78 +154,77 @@ async function buscarClima() {
     } catch (erro) {
         if (erro.message === "limite") {
             mostrarErro("Você fez muitas requisições. Aguarde um pouco.");
+        } else if (erro.name === "AbortError") {
+            mostrarErro("Erro ao buscar dados. Tente novamente."); // <--- timeout
         } else {
             mostrarErro("Erro ao buscar dados. Tente novamente.");
         }
-
-    } finally {
-        esconderCarregamento();
     }
 }
+    // ===== INTERFACE =====
+    function exibirClima(nome, pais, dados) {
+        esconderMensagens();
+        cityName.textContent = `${nome}, ${pais}`;
+        temperature.textContent = `${Math.round(dados.temperature_2m)}°`;
+        currentDate.textContent = obterDataAtual();
 
-// ===== INTERFACE =====
-function exibirClima(nome, pais, dados) {
-    esconderMensagens();
-    cityName.textContent = `${nome}, ${pais}`;
-    temperature.textContent = `${Math.round(dados.temperature_2m)}°`;
-    currentDate.textContent = obterDataAtual();
+        const clima = obterDescricaoClima(dados.weather_code);
+        weatherIcon.className = `wi ${clima.icone}`;
+        description.textContent = clima.descricao;
 
-    const clima = obterDescricaoClima(dados.weather_code);
-    weatherIcon.className = `wi ${clima.icone}`;
-    description.textContent = clima.descricao;
+        // 🔥 NOVOS CAMPOS NO DOM
+        humidity.textContent = dados.humidity ?? '--';
+        wind.textContent = dados.wind_speed ?? '--';
+        rain.textContent = dados.precipitation ?? '--';
 
-    // 🔥 NOVOS CAMPOS NO DOM
-    humidity.textContent = dados.humidity ?? '--';
-    wind.textContent = dados.wind_speed ?? '--';
-    rain.textContent = dados.precipitation ?? '--';
-
-    searchScreen.style.display = 'none';
-    resultScreen.style.display = 'flex';
-}
-
-function voltarParaBusca() {
-    cityInput.value = '';
-    esconderMensagens();
-    resultScreen.style.display = 'none';
-    searchScreen.style.display = 'flex';
-}
-
-function mostrarErro(msg) {
-    error.textContent = msg;
-    error.style.display = 'block';
-}
-
-function mostrarCarregamento() {
-    loading.style.display = 'block';
-}
-
-function esconderCarregamento() {
-    loading.style.display = 'none';
-}
-
-function esconderMensagens() {
-    loading.style.display = 'none';
-    error.style.display = 'none';
-}
-
-function aplicarTemaHorario() {
-    const hora = new Date().getHours();
-    const body = document.body;
-
-    if (hora >= 18 || hora < 6) {
-        body.classList.add('night-mode');
-    } else {
-        body.classList.remove('night-mode');
+        searchScreen.style.display = 'none';
+        resultScreen.style.display = 'flex';
     }
-}
 
-// ===== INICIALIZAÇÃO =====
-aplicarTemaHorario();
+    function voltarParaBusca() {
+        cityInput.value = '';
+        esconderMensagens();
+        resultScreen.style.display = 'none';
+        searchScreen.style.display = 'flex';
+    }
 
-// ===== EVENTOS =====
-searchBtn.addEventListener('click', buscarClima);
-cityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') buscarClima(); });
-backBtn.addEventListener('click', voltarParaBusca);
+    function mostrarErro(msg) {
+        error.textContent = msg;
+        error.style.display = 'block';
+        resultScreen.style.display = 'none'; // <--- adicionado
+    }
 
-// ===== EXPORTA PARA TESTES =====
-module.exports = { buscarCoordenadas, buscarDadosClima, obterDescricaoClima, buscarClima };
+    function mostrarCarregamento() {
+        loading.style.display = 'block';
+    }
+
+    function esconderCarregamento() {
+        loading.style.display = 'none';
+    }
+
+    function esconderMensagens() {
+        loading.style.display = 'none';
+        error.style.display = 'none';
+    }
+
+    function aplicarTemaHorario() {
+        const hora = new Date().getHours();
+        const body = document.body;
+
+        if (hora >= 18 || hora < 6) {
+            body.classList.add('night-mode');
+        } else {
+            body.classList.remove('night-mode');
+        }
+    }
+
+    // ===== INICIALIZAÇÃO =====
+    aplicarTemaHorario();
+
+    // ===== EVENTOS =====
+    searchBtn.addEventListener('click', buscarClima);
+    cityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') buscarClima(); });
+    backBtn.addEventListener('click', voltarParaBusca);
+
+    // ===== EXPORTA PARA TESTES =====
+    module.exports = { buscarCoordenadas, buscarDadosClima, obterDescricaoClima, buscarClima };
