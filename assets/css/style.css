@@ -1,93 +1,120 @@
-/* ===== VARIÁVEIS DE CORES ===== */
+/* ===================== */
+/*   PALETA DE CORES     */
+/* ===================== */
 :root {
-    --bg-dark: #1d1f4b;       /* azul marinho */
-    --bg-light: #6a4bbf;      /* lilás */
+    --bg-dark: #1d1f4b;
+    --bg-light: #6a4bbf;
+    --night-dark: #0a0b26;
+    --night-medium: #111339;
+    --night-light: #1a1c4d;
+
     --card-bg: rgba(255, 255, 255, 0.12);
-    --card-border: rgba(255, 255, 255, 0.2);
+    --card-border: rgba(255, 255, 255, 0.22);
 
     --btn: #9f7bff;
     --btn-hover: #b892ff;
 
     --text-light: #ffffff;
-    --text-muted: #d8d8d8;
+    --text-dark: #e8e6f2;
+    --text-muted: #c9c7d9;
+
+    --error-bg: #ffe6e6;
+    --error-text: #c41e3a;
+
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.18);
 
     --blur: blur(14px);
 }
 
-/* ===== RESET ===== */
+/* ===================== */
+/*        RESET          */
+/* ===================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
-/* ===== BODY ===== */
 body {
+    font-family: 'Poppins', sans-serif;
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+    transition: background 0.4s ease;
 }
 
-/* Tema claro — padrão */
-body {
-    background-color: #eef2f3;
-    color: #222;
-    transition: background-color 0.4s ease;
-}
-
-/* Tema escuro */
+/* Tema noturno */
 body.night-mode {
-    background-color: #0f172a; /* azul bem escuro */
-    color: #f1f5f9;
+    background: linear-gradient(to bottom, var(--night-dark), var(--night-medium));
 }
 
-/* Se quiser escurecer resultScreen também */
-#resultScreen.night-mode,
-#searchScreen.night-mode {
-    color: inherit;
-}
-
-/* ===== CARD PRINCIPAL ===== */
+/* ===================== */
+/*       CONTAINER       */
+/* ===================== */
 .container {
-    width: 350px;
     background: var(--card-bg);
     backdrop-filter: var(--blur);
-    border-radius: 22px;
-    padding: 2rem 1.5rem;
     border: 1px solid var(--card-border);
-    color: var(--text-light);
-    text-align: center;
+
+    width: 100%;
+    max-width: 32rem;
+    padding: 2.5rem 1.8rem;
+    border-radius: 1.25rem;
 
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    align-items: center;
+    gap: 1.8rem;
+
+    box-shadow: 0 0.6rem 1.8rem var(--shadow-medium);
 }
 
-/* ===== TÍTULO ===== */
-.container h1 {
-    font-size: 1.6rem;
+/* ===================== */
+/*        TÍTULO         */
+/* ===================== */
+h1 {
+    font-size: 2rem;
+    color: var(--text-light);
     font-weight: 600;
+    text-align: center;
 }
 
-/* ===== FORM ===== */
-form {
+/* ===================== */
+/*      TELA DE BUSCA    */
+/* ===================== */
+#searchScreen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.search-area {
     display: flex;
     gap: 0.6rem;
+    width: 100%;
 }
 
 input {
     flex: 1;
-    padding: 0.8rem;
-    border-radius: 12px;
+    padding: 0.85rem 1rem;
     border: none;
-    outline: none;
-    background: rgba(255,255,255,0.2);
+    border-radius: 0.7rem;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
     color: var(--text-light);
+    font-size: 1rem;
+    transition: 0.3s ease;
+    border: 1px solid transparent;
+}
+
+input:focus {
+    border-color: var(--btn);
+    background: rgba(255, 255, 255, 0.28);
 }
 
 input::placeholder {
@@ -95,54 +122,196 @@ input::placeholder {
 }
 
 button {
-    padding: 0.8rem 1rem;
     background: var(--btn);
-    color: #fff;
     border: none;
-    border-radius: 12px;
+    padding: 0.9rem 1.6rem;
+    border-radius: 0.7rem;
+    color: white;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.3s ease;
+    box-shadow: 0 0.25rem 0.8rem rgba(0, 0, 0, 0.15);
 }
 
 button:hover {
     background: var(--btn-hover);
+    transform: translateY(-2px);
 }
 
-/* ===== RESULTADO ===== */
-.result {
+/* ===================== */
+/*    LOADING + ERRO     */
+/* ===================== */
+#loading {
     display: none;
-    background: rgba(255,255,255,0.15);
+    color: var(--text-light);
+    font-size: 1rem;
+    text-align: center;
+}
+
+#error {
+    display: none;
+    background: var(--error-bg);
+    color: var(--error-text);
     padding: 1rem;
-    border-radius: 14px;
+    border-radius: 0.7rem;
+    border-left: 0.35rem solid var(--error-text);
+    text-align: center;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+/* ===================== */
+/*    TELA DE RESULTADO  */
+/* ===================== */
+#resultScreen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    width: 100%;
+    position: relative;
+}
+
+/* HEADER DO CLIMA */
+.weather-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+
+    width: 100%;
+    padding: 1.8rem 1.2rem;
+
+    background: linear-gradient(135deg, #7c5cff, #a88dff);
+    border-radius: 1.2rem;
+    box-shadow: 0 0.3rem 1.2rem rgba(0, 0, 0, 0.15);
+}
+
+/* Ícone animado */
+#weatherIcon {
+    font-size: 4.8rem;
+    color: white;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+#temperature {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+/* INFO PRINCIPAL */
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#cityName {
+    font-size: 1.7rem;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+#currentDate {
+    color: var(--text-muted);
+}
+
+#description {
     font-size: 1.2rem;
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--text-light);
+    font-weight: 500;
 }
 
-/* Animação suave quando aparece */
-.result.show {
-    display: block;
-    animation: fadeIn 0.4s ease-in-out;
+/* ===================== */
+/*     EXTRA INFO        */
+/* ===================== */
+.extra-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    padding: 1rem;
+    border-radius: 1rem;
+    gap: 0.5rem;
+
+    backdrop-filter: blur(6px);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+.extra-info p {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-light);
+    align-items: center;
 }
 
-/* ===== RESPONSIVO ===== */
-@media (max-width: 380px) {
+.extra-info i {
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+/* ===================== */
+/*  BOTÃO DE VOLTAR      */
+/* ===================== */
+#backBtn {
+    position: absolute;
+    top: 0.8rem;
+    left: 0.8rem;
+
+    width: 3rem;
+    height: 3rem;
+
+    border-radius: 50%;
+    background: var(--btn);
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    box-shadow: 0 0.25rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+#backBtn i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+#backBtn:hover {
+    background: var(--btn-hover);
+    transform: scale(1.07);
+}
+
+/* ===================== */
+/*      RESPONSIVO       */
+/* ===================== */
+@media (max-width: 480px) {
+
     .container {
-        width: 95%;
-        padding: 1.5rem;
+        padding: 2rem 1.4rem;
     }
 
-    form {
-        flex-direction: column;
+    #temperature {
+        font-size: 3.2rem;
     }
 
-    button {
-        width: 100%;
+    #cityName {
+        font-size: 1.5rem;
+    }
+
+    #backBtn {
+        width: 2.6rem;
+        height: 2.6rem;
     }
 }

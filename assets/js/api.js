@@ -1,5 +1,5 @@
 /**
- * @fileoverview Sistema de Previsão do Tempo - Thali Weather
+ * @fileoverview Sistema de Previsão do Tempo - Thali Weather 
  * @description Aplicação web para consulta de dados meteorológicos em tempo real.
  * Utiliza as APIs Open-Meteo (Geocoding e Weather) para buscar informações climáticas
  * de cidades ao redor do mundo.
@@ -10,10 +10,6 @@
  */
 
 // ===== SELEÇÃO DE ELEMENTOS DO DOM =====
-/**
- * Elementos HTML manipulados pela aplicação
- * @type {HTMLElement}
- */
 const cityInput = document.getElementById('cityInput');
 const searchBtn = document.getElementById('searchBtn');
 const loading = document.getElementById('loading');
@@ -27,44 +23,27 @@ const description = document.getElementById('description');
 const currentDate = document.getElementById('currentDate');
 const backBtn = document.getElementById('backBtn');
 
+// NOVOS CAMPOS
+const humidity = document.getElementById('humidity');
+const wind = document.getElementById('wind');
+const rain = document.getElementById('rain');
+
+// ===== ESTADO INICIAL PARA OS TESTES =====
+searchScreen.style.display = 'flex';
+resultScreen.style.display = 'none';
+error.style.display = 'none';
+loading.style.display = 'none';
+
 // ===== CONSTANTES =====
-/**
- * Tempo máximo de espera por resposta da API (em milissegundos)
- * @constant {number}
- * @default 10000
- */
 const TIMEOUT_MS = 10000;
 
 // ===== FUNÇÕES AUXILIARES =====
-
-/**
- * Retorna a data atual formatada em português
- * @returns {string} Data formatada (ex: "segunda-feira, 13 de outubro de 2025")
- * @example
- * const hoje = obterDataAtual();
- * console.log(hoje); // "segunda-feira, 13 de outubro de 2025"
- */
 function obterDataAtual() {
     const hoje = new Date();
     const opcoes = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return hoje.toLocaleDateString('pt-BR', opcoes);
 }
 
-/**
- * Executa fetch com timeout configurável
- * @async
- * @param {string} url - URL da requisição
- * @param {number} [timeout=TIMEOUT_MS] - Tempo máximo em milissegundos
- * @returns {Promise<Response>} Resposta HTTP
- * @throws {Error} Lança 'Timeout' se exceder o tempo limite
- * @throws {Error} Propaga erros de rede
- * @example
- * try {
- *   const response = await fetchComTimeout('https://api.example.com');
- * } catch (erro) {
- *   console.error(erro);
- * }
- */
 async function fetchComTimeout(url, timeout = TIMEOUT_MS) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -80,24 +59,11 @@ async function fetchComTimeout(url, timeout = TIMEOUT_MS) {
 }
 
 // ===== FUNÇÕES DE API =====
-
-/**
- * Busca coordenadas geográficas de uma cidade
- * @async
- * @param {string} cidade - Nome da cidade
- * @returns {Promise<Object|null>} Objeto com latitude, longitude, nome e país, ou null se não encontrado
- * @throws {Error} Erro de requisição ou limite de requisições
- * @example
- * const coords = await buscarCoordenadas('São Paulo');
- * // { latitude: -23.5505, longitude: -46.6333, nome: 'São Paulo', pais: 'Brasil' }
- */
 async function buscarCoordenadas(cidade) {
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cidade)}&count=1&language=pt&format=json`;
     const resposta = await fetchComTimeout(url);
 
-    if (resposta.status === 429) {
-        throw new Error('limite');
-    }
+    if (resposta.status === 429) throw new Error('limite');
 
     const dados = await resposta.json();
     if (!dados.results || dados.results.length === 0) return null;
@@ -111,43 +77,34 @@ async function buscarCoordenadas(cidade) {
     };
 }
 
-/**
- * Busca dados climáticos atuais de uma localização
- * @async
- * @param {Object} coordenadas - Objeto com latitude e longitude
- * @param {number} coordenadas.latitude
- * @param {number} coordenadas.longitude
- * @returns {Promise<Object>} Dados climáticos atuais
- * @example
- * const clima = await buscarDadosClima({ latitude: -23.5505, longitude: -46.6333 });
- * // { temperature_2m: 25, weather_code: 0, current: {...}, currentWeather: {...} }
- */
 async function buscarDadosClima(coordenadas) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordenadas.latitude}&longitude=${coordenadas.longitude}&current=temperature_2m,weather_code&timezone=auto`;
+    // 🔥 ADICIONADO: umidade, vento, precipitação
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordenadas.latitude}&longitude=${coordenadas.longitude}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m,precipitation&timezone=auto`;
+
     const resposta = await fetchComTimeout(url);
     const dados = await resposta.json();
 
+    // valores principais (já existiam)
     const temp = dados.current?.temperature_2m ?? dados.currentWeather?.temp;
     const code = dados.current?.weather_code ?? dados.currentWeather?.code;
+
+    // 🔥 NOVOS DADOS
+    const hum = dados.current?.relative_humidity_2m ?? null;
+    const windSpeed = dados.current?.wind_speed_10m ?? null;
+    const prec = dados.current?.precipitation ?? null;
 
     return {
         temperature_2m: temp,
         weather_code: code,
+        humidity: hum,
+        wind_speed: windSpeed,
+        precipitation: prec,
         current: dados.current,
         currentWeather: dados.currentWeather
     };
 }
 
-/**
- * Converte código do clima em descrição e ícone visual
- * @param {number} codigo - Código do clima (0-99)
- * @returns {Object} Objeto com descrição e classe de ícone
- * @returns {string} descricao
- * @returns {string} icone
- * @example
- * obterDescricaoClima(0);
- * // { descricao: 'Céu limpo', icone: 'wi-day-sunny' }
- */
+// ===== DESCRIÇÃO DO CLIMA =====
 function obterDescricaoClima(codigo) {
     const codigos = {
         0: { descricao: 'Céu limpo', icone: 'wi-day-sunny' },
@@ -175,18 +132,13 @@ function obterDescricaoClima(codigo) {
     return codigos[codigo] || { descricao: 'Clima desconhecido', icone: 'wi-na' };
 }
 
-/**
- * Função principal para buscar clima e atualizar interface
- * @async
- * @returns {Promise<void>}
- * @example
- * await buscarClima();
- */
+// ===== PRINCIPAL =====
 async function buscarClima() {
     const cidade = cityInput.value.trim();
     if (!cidade) return;
 
     esconderMensagens();
+
     mostrarCarregamento();
 
     try {
@@ -195,44 +147,42 @@ async function buscarClima() {
             mostrarErro("Cidade não encontrada!");
             return;
         }
+
         const dadosClima = await buscarDadosClima(coordenadas);
         exibirClima(coordenadas.nome, coordenadas.pais, dadosClima);
+
     } catch (erro) {
         if (erro.message === "limite") {
             mostrarErro("Você fez muitas requisições. Aguarde um pouco.");
         } else {
             mostrarErro("Erro ao buscar dados. Tente novamente.");
         }
+
     } finally {
         esconderCarregamento();
     }
 }
 
-// ===== FUNÇÕES DE INTERFACE =====
-
-/**
- * Exibe dados climáticos na interface
- * @param {string} nome - Nome da cidade
- * @param {string} pais - Nome do país
- * @param {Object} dados - Dados do clima
- * @param {number} dados.temperature_2m
- * @param {number} dados.weather_code
- */
+// ===== INTERFACE =====
 function exibirClima(nome, pais, dados) {
     esconderMensagens();
     cityName.textContent = `${nome}, ${pais}`;
     temperature.textContent = `${Math.round(dados.temperature_2m)}°`;
     currentDate.textContent = obterDataAtual();
+
     const clima = obterDescricaoClima(dados.weather_code);
     weatherIcon.className = `wi ${clima.icone}`;
     description.textContent = clima.descricao;
+
+    // 🔥 NOVOS CAMPOS NO DOM
+    humidity.textContent = dados.humidity ?? '--';
+    wind.textContent = dados.wind_speed ?? '--';
+    rain.textContent = dados.precipitation ?? '--';
+
     searchScreen.style.display = 'none';
     resultScreen.style.display = 'flex';
 }
 
-/**
- * Volta para a tela de busca e limpa estado
- */
 function voltarParaBusca() {
     cityInput.value = '';
     esconderMensagens();
@@ -240,44 +190,28 @@ function voltarParaBusca() {
     searchScreen.style.display = 'flex';
 }
 
-/**
- * Mostra mensagem de erro
- * @param {string} msg - Mensagem a exibir
- */
 function mostrarErro(msg) {
     error.textContent = msg;
     error.style.display = 'block';
-    resultScreen.style.display = 'none';
 }
 
-/**
- * Mostra indicador de carregamento
- */
 function mostrarCarregamento() {
     loading.style.display = 'block';
 }
 
-/**
- * Esconde indicador de carregamento
- */
 function esconderCarregamento() {
     loading.style.display = 'none';
 }
 
-/**
- * Esconde todas as mensagens
- */
 function esconderMensagens() {
     loading.style.display = 'none';
     error.style.display = 'none';
 }
 
-/**
- * Aplica tema dia/noite conforme horário
- */
 function aplicarTemaHorario() {
     const hora = new Date().getHours();
     const body = document.body;
+
     if (hora >= 18 || hora < 6) {
         body.classList.add('night-mode');
     } else {
@@ -293,5 +227,5 @@ searchBtn.addEventListener('click', buscarClima);
 cityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') buscarClima(); });
 backBtn.addEventListener('click', voltarParaBusca);
 
-// ===== EXPORTA FUNÇÕES PARA TESTES =====
+// ===== EXPORTA PARA TESTES =====
 module.exports = { buscarCoordenadas, buscarDadosClima, obterDescricaoClima, buscarClima };

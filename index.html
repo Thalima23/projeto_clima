@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
     <!-- Weather Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Projeto Previsão do Tempo.">
     <meta name="author" content="Thalita">
-    <meta name="keywords" content="clima, previsão do tempo, Open Meteo, desenvolvimento web, fullstack, HTML, CSS, JavaScript">
+    <meta name="keywords"
+        content="clima, previsão do tempo, Open Meteo, desenvolvimento web, fullstack, HTML, CSS, JavaScript">
 
     <title>Previsão do Tempo</title>
 
@@ -23,45 +26,73 @@
 </head>
 
 <body>
-<div class="container">
+    <div class="container">
 
-    <!-- TELA DE BUSCA -->
-    <div id="searchScreen">
-        <h1>Previsão do Tempo</h1>
+        <!-- TELA DE BUSCA -->
+        <div id="searchScreen">
+            <h1>Previsão do Tempo</h1>
 
-        <div class="search-area">
-            <input type="text" id="cityInput" placeholder="Digite o nome da cidade">
-            <button id="searchBtn" type="button">Buscar</button>
+            <div class="search-area">
+                <input type="text" id="cityInput" placeholder="Digite o nome da cidade">
+                <button id="searchBtn" type="button">Buscar</button>
+            </div>
+
+            <div id="loading" style="display:none;">Carregando...</div>
+            <div id="error" style="display:none;"></div>
         </div>
 
-        <div id="loading" style="display:none;">Carregando...</div>
-        <div id="error" style="display:none;"></div>
+
+        <!-- TELA DE RESULTADO -->
+        <div id="resultScreen" style="display:none; position: relative;">
+            
+            <!-- Botão voltar -->
+            <button id="backBtn" title="Voltar ao início">
+                <i class="wi wi-direction-left"></i>
+            </button>
+
+            <!-- Temperatura + Ícone -->
+            <div class="weather-header">
+                <i id="weatherIcon" class="wi" style="font-size: 4rem;"></i>
+                <p id="temperature"></p>
+            </div>
+
+            <!-- Informações principais -->
+            <div class="weather-info">
+                <h2 id="cityName"></h2>
+                <p id="currentDate"></p>
+                <p id="description"></p>
+
+                <!-- Variáveis Meteorológicas Adicionais com Ícones -->
+                <div class="extra-info">
+
+                    <p>
+                        <i class="wi wi-humidity"></i>
+                        <strong>Umidade:</strong>
+                        <span id="humidity">--</span>%
+                    </p>
+
+                    <p>
+                        <i class="wi wi-strong-wind"></i>
+                        <strong>Vento:</strong>
+                        <span id="wind">--</span> km/h
+                    </p>
+
+                    <p>
+                        <i class="wi wi-raindrop"></i>
+                        <strong>Precipitação:</strong>
+                        <span id="rain">--</span> mm
+                    </p>
+
+                </div>
+            </div>
+
+            
+
+        </div>
+
     </div>
 
-
-    <!-- TELA DE RESULTADO -->
-    <div id="resultScreen" style="display:none;">
-
-        <!-- Temperatura + Ícone -->
-        <div class="weather-header">
-            <i id="weatherIcon" class="wi" style="font-size: 4rem;"></i>
-            <p id="temperature"></p>
-        </div>
-
-        <!-- Nome da cidade -->
-        <div class="weather-info">
-            <h2 id="cityName"></h2>
-            <p id="currentDate"></p>
-            <p id="description"></p>
-        </div>
-
-        <button id="backBtn" title="Voltar ao início">
-    <i class="wi wi-direction-left" style="font-size: 2.2rem;"></i>
-        </button>
-    </div>
-
-</div>
-
-<script src="./assets/js/api.js"></script>
+    <script src="./assets/js/api.js"></script>
 </body>
+
 </html>
