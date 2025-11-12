@@ -110,6 +110,30 @@ npm test
 - Tratamento de erros (rede, timeout, limite de requisições)
 - Compatibilidade com alterações na resposta da API
 ---
+## 🔒 Segurança e Privacidade
+
+- Todas as requisições são feitas via **HTTPS**, garantindo comunicação segura.  
+- Nenhum dado pessoal é coletado, armazenado ou compartilhado.  
+- Os dados meteorológicos exibidos são obtidos exclusivamente da **API pública Open-Meteo**.  
+- Caso seja usada geolocalização, o usuário será informado e poderá conceder ou negar permissão.  
+---
+
+### ⚖️ Licença e Conformidade
+
+Este projeto é distribuído sob a **Licença MIT** — veja o arquivo [LICENSE](./LICENSE) para mais detalhes.  
+A aplicação utiliza bibliotecas e serviços de terceiros conforme descrito em [NOTICE.md](./NOTICE.md).  
+Todas as dependências e APIs utilizadas respeitam suas respectivas licenças (MIT, CC BY 4.0, SIL OFL).  
+
+---
+## 🧩  Créditos e Atribuições
+
+- **Open-Meteo API** — Dados meteorológicos sob licença **CC BY 4.0**  
+- **Google Fonts (Poppins)** — Licença **SIL Open Font License 1.1**  
+- **Weather Icons** — Licença **SIL OFL 1.1 / MIT**  
+- **Cloudflare CDN** — Entrega de conteúdo estático  
+- **Jest** — Ferramenta de testes sob licença **MIT**
+
+---
 ## 🧭 Exemplo de Uso
 
 ```bash
