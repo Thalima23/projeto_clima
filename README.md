@@ -53,6 +53,8 @@ projeto_clima/
 ├─ style.css               # Estilos da aplicação
 └─ README.md               # Documentação do projeto
 ```
+
+---
 ## 🚀 Instalação e Execução
 
 1. Clone o repositório:
@@ -69,7 +71,7 @@ cd projeto_clima
 -- Execute o projeto:
 Abra o arquivo index.html diretamente no navegador.
 💡 Dica: Nenhum servidor local é necessário — basta abrir o arquivo HTML.
-
+---
 ## ⚙️ Uso
 
 # Digite o nome de uma cidade no campo de busca.
@@ -81,7 +83,7 @@ Abra o arquivo index.html diretamente no navegador.
 3. Clique em “Voltar” para fazer outra consulta.
 
 4. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
-
+---
 ## 🧪 Testes
 
 O projeto utiliza Jest para testes unitários.
@@ -92,6 +94,8 @@ O projeto utiliza Jest para testes unitários.
 npm install
 npm test
 ```
+
+---
 ## 📋 Cobertura dos testes:
 
 - Coordenadas válidas retornadas pela API
@@ -100,7 +104,7 @@ npm test
 - Fluxo completo de busca e exibição
 - Tratamento de erros (rede, timeout, limite de requisições)
 - Compatibilidade com alterações na resposta da API
-
+---
 ## 🧭 Exemplo de Uso
 
 ```bash
@@ -111,6 +115,8 @@ Retorno:
 ☀️ Clima: Céu limpo
 📅 Data: 12/11/2025
 ```
+
+---
 ## 📄 Licença
 MIT License © Thalita
 
