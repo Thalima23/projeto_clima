@@ -11,7 +11,10 @@ Aplicação web para consulta de dados meteorológicos em tempo real. Utiliza as
 - 🌡️ Exibir:
   - Temperatura em °C  
   - Descrição do clima  
-  - Ícone correspondente (via Weather Icons)  
+  - Ícone correspondente (via Weather Icons)
+  - Umidade (%)
+  - Vento (km/h)
+  - Precipitação (mm)
   - Data atual formatada
 - 🌗 Tema dinâmico (dia/noite) baseado no horário local.
 - 🔁 Navegação intuitiva entre telas de busca e resultado.
