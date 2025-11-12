@@ -22,7 +22,6 @@ Aplicação web para consulta de dados meteorológicos em tempo real. Utiliza as
   - Timeout de requisição
 
 ---
----
 
 ## 🛠 Tecnologias Utilizadas
 
