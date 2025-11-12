@@ -78,9 +78,17 @@ Abra o arquivo index.html diretamente no navegador.
 
 2. Veja a temperatura, descrição do clima e ícone correspondente.
 
-3. Clique em “Voltar” para fazer outra consulta.
+3. Visualize os dados climáticos:
+Temperatura (°C)
+Descrição do clima e ícone
+Umidade (%)
+Vento (km/h)
+Precipitação (mm)
+Data da consulta
 
-4. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
+4. Clique em “Voltar” para fazer outra consulta.
+
+5. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
 ---
 ## 🧪 Testes
 
@@ -106,12 +114,16 @@ npm test
 ## 🧭 Exemplo de Uso
 
 ```bash
-Digite: São Paulo
+Digite: São Carlos
 ↓
 Retorno:
 🌡️ Temperatura: 25°C
 ☀️ Clima: Céu limpo
+💧 Umidade: 75%
+🌬️ Vento: 12 km/h
+🌧️ Precipitação: 1 mm
 📅 Data: 12/11/2025
+
 ```
 
 ---
