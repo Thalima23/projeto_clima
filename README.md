@@ -118,13 +118,14 @@ npm test
 - Caso seja usada geolocalização, o usuário será informado e poderá conceder ou negar permissão.  
 ---
 
-### ⚖️ Licença e Conformidade
+## ⚖️ Licença e Conformidade
 
 Este projeto é distribuído sob a **Licença MIT** — veja o arquivo [LICENSE](./LICENSE) para mais detalhes.  
 A aplicação utiliza bibliotecas e serviços de terceiros conforme descrito em [NOTICE.md](./NOTICE.md).  
 Todas as dependências e APIs utilizadas respeitam suas respectivas licenças (MIT, CC BY 4.0, SIL OFL).  
 
 ---
+
 ## 🧩  Créditos e Atribuições
 
 - **Open-Meteo API** — Dados meteorológicos sob licença **CC BY 4.0**  
