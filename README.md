@@ -74,13 +74,13 @@ Abra o arquivo index.html diretamente no navegador.
 ---
 ## ⚙️ Uso
 
-# Digite o nome de uma cidade no campo de busca
+1. Digite o nome de uma cidade no campo de busca
 
-1. Clique em “Buscar” ou pressione Enter.
+2. Clique em “Buscar” ou pressione Enter.
 
-2. Veja a temperatura, descrição do clima e ícone correspondente.
+3. Veja a temperatura, descrição do clima e ícone correspondente.
 
-3. Visualize os dados climáticos:
+4. Visualize os dados climáticos:
    
 Temperatura (°C)
 Descrição do clima e ícone
