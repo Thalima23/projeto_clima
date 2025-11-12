@@ -36,8 +36,6 @@ Aplicação web para consulta de dados meteorológicos em tempo real. Utiliza as
 
 ---
 
----
-
 ## 💻 Estrutura do Projeto
 ```bash
 projeto_clima/
