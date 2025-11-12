@@ -82,16 +82,12 @@ Abra o arquivo index.html diretamente no navegador.
 
 4. Visualize os dados climáticos:
    
-Temperatura (°C)
-Descrição do clima e ícone
-Umidade (%)
-Vento (km/h)
-Precipitação (mm)
-Data da consulta
+| 🌡️ Temperatura | 💧 Umidade | 🌬️ Vento | 🌧️ Precipitação |
 
-5. Clique em “Voltar” para fazer outra consulta.
 
-6. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
+6. Clique em “Voltar” para fazer outra consulta.
+
+7. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
 ---
 ## 🧪 Testes
 
