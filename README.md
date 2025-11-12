@@ -74,13 +74,14 @@ Abra o arquivo index.html diretamente no navegador.
 ---
 ## ⚙️ Uso
 
-# Digite o nome de uma cidade no campo de busca.
+# Digite o nome de uma cidade no campo de busca
 
 1. Clique em “Buscar” ou pressione Enter.
 
 2. Veja a temperatura, descrição do clima e ícone correspondente.
 
 3. Visualize os dados climáticos:
+   
 Temperatura (°C)
 Descrição do clima e ícone
 Umidade (%)
@@ -88,9 +89,9 @@ Vento (km/h)
 Precipitação (mm)
 Data da consulta
 
-4. Clique em “Voltar” para fazer outra consulta.
+5. Clique em “Voltar” para fazer outra consulta.
 
-5. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
+6. O tema do fundo muda automaticamente (claro ou escuro) conforme o horário local.
 ---
 ## 🧪 Testes
 
